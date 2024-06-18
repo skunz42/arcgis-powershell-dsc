@@ -704,6 +704,9 @@ function Get-DownloadsInstallsConfigurationData
     if($ConfigData.ConfigData.Pro -and $ConfigData.ConfigData.Pro.LicenseFilePath){
         $ConfigData.ConfigData.Pro.Remove("LicenseFilePath")
     }
+    if($ConfigData.ConfigData.Drone2Map -and $ConfigData.ConfigData.Drone2Map.LicenseFilePath){
+        $ConfigData.ConfigData.Drone2Map.Remove("LicenseFilePath")
+    }
     if($ConfigData.ConfigData.Desktop -and $ConfigData.ConfigData.Desktop.LicenseFilePath){
         $ConfigData.ConfigData.Desktop.Remove("LicenseFilePath")
     }
@@ -871,6 +874,7 @@ function Invoke-ArcGISConfiguration
             $PortalCheck = (($ConfigurationParamsHashtable.AllNodes | Where-Object { $_.Role -icontains 'Portal' } | Measure-Object).Count -gt 0)
             $DesktopCheck = (($ConfigurationParamsHashtable.AllNodes | Where-Object { $_.Role -icontains 'Desktop' }  | Measure-Object).Count -gt 0)
             $ProCheck = (($ConfigurationParamsHashtable.AllNodes | Where-Object { $_.Role -icontains 'Pro' }  | Measure-Object).Count -gt 0)
+            $Drone2MapCheck = (($ConfigurationParamsHashtable.AllNodes | Where-Object { $_.Role -icontains 'Drone2Map' }  | Measure-Object).Count -gt 0)
             $LicenseManagerCheck = (($ConfigurationParamsHashtable.AllNodes | Where-Object { $_.Role -icontains 'LicenseManager' } | Measure-Object).Count -gt 0)
             
             $EnterpriseSkipLicenseStep = $true
@@ -897,12 +901,22 @@ function Invoke-ArcGISConfiguration
                     $ProSkipLicenseStep = $true
                 }
             }
+
+            $Drone2MapSkipLicenseStep = $true
+            if($ConfigurationParamsHashtable.ConfigData.Drone2MapVersion -and $Drone2MapCheck){
+                $Drone2MapSkipLicenseStep = $false
+                if(($ConfigurationParamsHashtable.ConfigData.Drone2Map.AuthorizationType -ieq "NAMED_USER") -or 
+                ($ConfigurationParamsHashtable.ConfigData.Drone2Map.AuthorizationType -ieq "CONCURRENT_USE" -and -not($LicenseManagerCheck))){
+                    $Drone2MapSkipLicenseStep = $true
+                }
+            }
+
             $LicenseManagerSkipLicenseStep = $true
             if($ConfigurationParamsHashtable.ConfigData.LicenseManagerVersion -and $LicenseManagerCheck -and $ConfigurationParamsHashtable.ConfigData.LicenseManager.LicenseFilePath){
                 $LicenseManagerSkipLicenseStep = $false
             }
 
-            if(-not($EnterpriseSkipLicenseStep -and $DesktopSkipLicenseStep -and $ProSkipLicenseStep -and $LicenseManagerSkipLicenseStep)){
+            if(-not($EnterpriseSkipLicenseStep -and $DesktopSkipLicenseStep -and $ProSkipLicenseStep -and $Drone2MapSkipLicenseStep -and $LicenseManagerSkipLicenseStep)){
                 $LicenseCD = @{
                     AllNodes = @() 
                 }
@@ -1105,6 +1119,47 @@ function Invoke-ArcGISConfiguration
                             }
                         }
                     }
+
+                    if($Node.Role -icontains "Drone2Map"){
+                        if($ConfigurationParamsHashtable.ConfigData.Drone2Map.AuthorizationType -ieq "SINGLE_USE"){
+                            $NodeToAdd.Role += "Drone2Map"
+
+                            $Drone2MapLicensePassword = $null
+                            if($ConfigurationParamsHashtable.ConfigData.Drone2Map.LicensePasswordFilePath){
+                                if(-not(Test-Path $ConfigurationParamsHashtable.ConfigData.Drone2Map.LicensePasswordFilePath)){
+                                    throw "Password file $($ConfigurationParamsHashtable.ConfigData.Drone2Map.LicensePasswordFilePath) does not exist."
+                                }
+                                $Drone2MapLicensePassword = (Get-Content $ConfigurationParamsHashtable.ConfigData.Drone2Map.LicensePasswordFilePath | ConvertTo-SecureString )
+                            }elseif($ConfigurationParamsHashtable.ConfigData.Drone2Map.LicensePasswordEnvironmentVariableName){
+                                $Drone2MapLicensePassword = (Get-PasswordFromEnvironmentVariable -EnvironmentVariableName $ConfigurationParamsHashtable.ConfigData.Drone2Map.LicensePasswordEnvironmentVariableName)
+                            }elseif($ConfigurationParamsHashtable.ConfigData.Drone2Map.LicensePassword){
+                                $Drone2MapLicensePassword = (ConvertTo-SecureString $ConfigurationParamsHashtable.ConfigData.Drone2Map.LicensePassword -AsPlainText -Force)
+                            }
+
+                            # Per Node - Drone2Map
+                            if($Node.Drone2MapLicenseFilePath)
+                            {
+                                $Drone2MapLicenseFilePath = $Node.Drone2MapLicenseFilePath
+                                $Drone2MapLicensePassword = $null
+                                if($Node.Drone2MapLicensePasswordFilePath){
+                                    if(-not(Test-Path $Node.Drone2MapLicensePasswordFilePath)){
+                                        throw "Password file $($Node.Drone2MapLicensePasswordFilePath) does not exist."
+                                    }
+                                    $Drone2MapLicensePassword = (Get-Content $Node.Drone2MapLicensePasswordFilePath | ConvertTo-SecureString )
+                                }elseif($Node.Drone2MapLicensePasswordEnvironmentVariableName){
+                                    $Drone2MapLicensePassword = (Get-PasswordFromEnvironmentVariable -EnvironmentVariableName $Node.Drone2MapLicensePasswordEnvironmentVariableName)
+                                }elseif($Node.Drone2MapLicensePassword){
+                                    $Drone2MapLicensePassword = (ConvertTo-SecureString $Node.Drone2MapLicensePassword -AsPlainText -Force)
+                                }
+                            }
+
+                            $NodeToAdd["Drone2MapLicenseFilePath"] = $Drone2MapLicenseFilePath
+                            if($null -ne $Drone2MapLicensePassword){
+                                $NodeToAdd["Drone2MapLicensePassword"] = New-Object -TypeName System.Management.Automation.PSCredential -ArgumentList ("PlaceHolder", $Drone2MapLicensePassword)
+                            }
+                        }
+                    }
+
                     if($Node.Role -icontains "LicenseManager"){
                         $NodeToAdd.Role += "LicenseManager"
                         if($ConfigurationParamsHashtable.ConfigData.LicenseManager -and $ConfigurationParamsHashtable.ConfigData.LicenseManager.LicenseFilePath){
@@ -1123,7 +1178,7 @@ function Invoke-ArcGISConfiguration
 
             #Configure Deployment
             $SkipConfigureStep = $False
-            if(($DesktopCheck -or $ProCheck -or $LicenseManagerCheck) -and -not($ServerCheck -or $PortalCheck)){
+            if(($DesktopCheck -or $ProCheck -or $Drone2MapCheck -or $LicenseManagerCheck) -and -not($ServerCheck -or $PortalCheck)){
                 $SkipConfigureStep = $True
             }
 

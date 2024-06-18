@@ -1,0 +1,51 @@
+{
+  "AllNodes": [
+    {
+      "NodeName": "geotec-sdsci.geotec.local",
+      "Role": [
+        "Pro"
+      ]
+    },
+    {
+      "NodeName": "geotec-analysis.geotec.local",
+      "Role": [
+        "Pro"
+      ]
+    },
+    {
+      "NodeName": "geotec-datamgmt.geotec.local",
+      "Role": [
+        "Pro"
+      ]
+    },
+    {
+      "NodeName": "geotec-geoevent.geotec.local",
+      "Role": [
+        "Pro"
+      ]
+    }
+  ],
+  "ConfigData": {
+    "ProVersion": "3.2",
+    "Pro": {
+      "LicenseFilePath": "",
+      "AuthorizationType": "SINGLE_USE",
+      "LockAuthSettings": true,
+      "BlockAddIns": 0,
+      "SoftwareClass": "Professional",
+      "PortalList": "https://www.arcgis.com",
+      "AllUsers": 1,
+      "EnableEUEI": true,
+      "CheckForUpdatesAtStartup": true,
+      "Installer": {
+        "Path": "C:\\GEOTEC\\iac\\powershell-dsc\\installers\\ArcGISPro_32_188049.exe",
+        "DotnetDesktopRuntimeDownloadUrl": "",
+        "DotnetDesktopRuntimePath": "C:\\GEOTEC\\iac\\powershell-dsc\\installers\\windowsdesktop-runtime-6.0.16-win-x64.exe",
+        "IsSelfExtracting": true,
+        "InstallDir": "C:\\ArcGIS\\Pro",
+        "PatchesDir": "",
+        "PatchInstallOrder": []
+      }
+    }
+  }
+}
