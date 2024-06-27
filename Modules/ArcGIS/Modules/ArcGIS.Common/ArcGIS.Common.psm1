@@ -801,6 +801,8 @@ function Get-ArcGISProductName
         $ProductName = 'ArcGIS License Manager'
     }elseif($Name -ieq 'Pro' -or $Name -ieq "ArcGIS Pro"){
         $ProductName = 'ArcGIS Pro'
+    }elseif($Name -ieq 'Drone2Map' -or $Name -ieq "ArcGIS Drone2Map"){
+        $ProductName = 'ArcGIS Drone2Map'
     }elseif($Name -ieq 'Desktop' -or $Name -ieq "ArcGIS Desktop"){
         $ProductName = 'ArcGIS Desktop'
     }elseif($Name -ieq "Web Styles" -or $Name -ieq 'WebStyles'){
@@ -875,12 +877,12 @@ function Get-ComponentCode
        [CmdletBinding()]
        param
        (
-        [ValidateSet("Server","Portal","DataStore","GeoEvent","NotebookServer","MissionServer","WorkflowManagerServer", "WorkflowManagerWebApp","Monitor", "WebStyles", "WebAdaptorIIS", "WebAdaptorJava","Desktop","Pro","LicenseManager","NotebookServerSamplesData","Insights","ServerDataInteroperability","DesktopDataInteroperability","ProDataInteroperability","ServerDataReviewer","DesktopDataReviewer","ServerWorkflowManagerClassic","DesktopWorkflowManagerClassic","ProWorkflowMangerClassic", "ServerLocationReferencing","DesktopLocationReferencing","ServerMappingChartingSolution","DesktopMappingChartingSolution","DesktopBackgroundGP64Bit","VideoServer","ServerDeepLearningLibraries","ProDeepLearningLibraries")]
+        [ValidateSet("Server","Portal","DataStore","GeoEvent","NotebookServer","MissionServer","WorkflowManagerServer", "WorkflowManagerWebApp","Monitor", "WebStyles", "WebAdaptorIIS", "WebAdaptorJava","Desktop","Pro","Drone2Map","LicenseManager","NotebookServerSamplesData","Insights","ServerDataInteroperability","DesktopDataInteroperability","ProDataInteroperability","ServerDataReviewer","DesktopDataReviewer","ServerWorkflowManagerClassic","DesktopWorkflowManagerClassic","ProWorkflowMangerClassic", "ServerLocationReferencing","DesktopLocationReferencing","ServerMappingChartingSolution","DesktopMappingChartingSolution","DesktopBackgroundGP64Bit","VideoServer","ServerDeepLearningLibraries","ProDeepLearningLibraries")]
         [parameter(Mandatory = $true)]
         [System.String]
         $ComponentName,
 
-        [ValidateSet("2.0","2.1","2.2","2.3","2.4","2.5","2.6","2.7","2.8","2.9","3.0","3.0.3","3.1","3.2","3.3","10.4","10.4.1","10.5","10.5.1","10.6","10.6.1","10.7","10.7.1","10.8","10.8.1","10.8.2","10.9","10.9.1","2018.0","2018.1","2019.0","2019.1","2019.2","2020.0","2020.1","2020.2","2020.3","2021.0","2022.0","3.4","3.4.1","2021.1","2021.1.1","2021.2.1", "2021.2", "2021.3.1", "2021.3","2022.1","2022.1.1","2022.2","2022.3","2023.0","2023.1","2023.2","2023.3","2024.0","11.0","11.1","11.2","11.3")]
+        [ValidateSet("2.0","2.1","2.2","2.3","2.4","2.5","2.6","2.7","2.8","2.9","3.0","3.0.3","3.1","3.2","3.3","10.4","10.4.1","10.5","10.5.1","10.6","10.6.1","10.7","10.7.1","10.8","10.8.1","10.8.2","10.9","10.9.1","2018.0","2018.1","2019.0","2019.1","2019.2","2020.0","2020.1","2020.2","2020.3","2021.0","2022.0","3.4","3.4.1","2021.1","2021.1.1","2021.2.1", "2021.2", "2021.3.1", "2021.3","2022.1","2022.1.1","2022.2","2022.3","2023.0","2023.1","2023.2","2023.3","2024.0","2024.1","11.0","11.1","11.2","11.3")]
         [parameter(Mandatory = $true)]
         [System.String]
         $Version
@@ -1069,6 +1071,12 @@ function Get-ComponentCode
             '3.1' = 'A61AD307-865F-429F-B2A3-5618BD333F7E'
             '3.2' = '76DFAD3E-96C5-4544-A6B4-3774DBF88B4E'
             '3.3' = 'B43BC6C2-05D2-460B-AEE4-D15A9CA7B55E'
+        }
+        Drone2Map = @{
+            '2022.1' = ''
+            '2023.1' = 'BB670C8B-C096-4A17-9665-3F8CBA150332'
+            '2023.2' = 'DBEFE4ED-2617-442C-BCDD-E7FD1091D2F0'
+            '2024.1' = ''
         }
         WebAdaptorIIS = @{
             '10.4' = @('B83D9E06-B57C-4B26-BF7A-004BE10AB2D5','E2C783F3-6F85-4B49-BFCD-6D6A57A2CFCE','901578F9-BC82-498D-A008-EC3F53F6C943','E3849BEC-6CAF-463F-8EFA-169116A32554','EE889E4F-85C7-4B8A-9DAA-5103C9E14FD6','89D96D88-CC2F-4E9B-84DD-5C976A4741EE','0913DB77-F27B-4FDE-9F51-01BB97BBEBB9','99B6A03C-D208-4E2E-B374-BA7972334396','A0F3D072-0CD1-43D7-AFDA-8F47B15C217C','0FE26871-21C3-4561-B52E-A8FED5C8E821','1D1F3C15-F368-44AF-9728-6CF031D478AF','CE5EC52D-B54D-4381-9F6E-2C08F7721620','E71AEC5B-25F0-47E5-B52C-847A1B779E48','5DA1F056-A3F1-46D5-8F2E-74E72F85B51B','1EB3D37A-902A-43E2-9EAA-1B43BA10C369','839FFEB7-76B5-4CBB-A05E-E2276FC3421D','594E1C33-1C6D-49B4-A83F-2A780193B75F','34330B0C-34CD-4DCF-A68D-FDE7A1834659','42A96EC7-7CA9-4F68-B946-E9BF84713605','A1A8DAE4-B6F9-446F-8F6A-487F1E07A434','3BF277C6-6A88-4F72-A08C-54F1E45F44E5')

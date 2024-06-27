@@ -83,6 +83,10 @@
         {
             $NodeRoleArray += "Pro"
         }
+        if($Node.Role -icontains "Drone2Map")
+        {
+            $NodeRoleArray += "Drone2Map"
+        }
         if($Node.Role -icontains "LicenseManager")
         {
             $NodeRoleArray += "LicenseManager"
@@ -704,6 +708,55 @@
                             DownloadPatches = if($ConfigurationData.ConfigData.DownloadPatches){ $ConfigurationData.ConfigData.DownloadPatches }else{ $False }
                             PatchesDir = $ConfigurationData.ConfigData.Pro.Installer.PatchesDir
                             PatchInstallOrder = $ConfigurationData.ConfigData.Pro.Installer.PatchInstallOrder
+                            Ensure = "Present"
+                        }
+                    }
+                }
+                'Drone2Map'
+                {
+                    # Installation Notes: https://pro.arcgis.com/en/pro-app/get-started/arcgis-pro-installation-administration.htm
+                    $PortalList = if($ConfigurationData.ConfigData.Drone2Map.PortalList){ $ConfigurationData.ConfigData.Drone2Map.PortalList }else{ "https://arcgis.com" }
+                    $Arguments = "/qn ACCEPTEULA=YES Portal_List=`"$PortalList`" AUTHORIZATION_TYPE=`"$($ConfigurationData.ConfigData.Drone2Map.AuthorizationType)`""
+
+                    if (-not ([string]::IsNullOrEmpty($ConfigurationData.ConfigData.Drone2Map.Installer.InstallDir))){
+                        $Arguments += " INSTALLDIR=`"$($ConfigurationData.ConfigData.Drone2Map.Installer.InstallDir)`""
+                    }
+
+                    if($ConfigurationData.ConfigData.Pro.AuthorizationType -ieq "CONCURRENT_USE"){
+                        $Arguments += " ESRI_LICENSE_HOST=`"$($ConfigurationData.ConfigData.Pro.EsriLicenseHost)`"" 
+                    }
+
+                    # Pro installed for all users. Per User installs for Pro not supported
+                    $Arguments += " ALLUSERS=1"
+
+                    if(-not($ConfigurationData.ConfigData.Drone2Map.ContainsKey("LockAuthSettings")) -or ($ConfigurationData.ConfigData.Drone2Map.ContainsKey("LockAuthSettings") -and -not($ConfigurationData.ConfigData.Drone2Map.LockAuthSettings)) ){
+						$Arguments += " LOCK_AUTH_SETTINGS=False"
+                    }
+					
+					if(-not($ConfigurationData.ConfigData.Drone2Map.ContainsKey("EnableEUEI")) -or ($ConfigurationData.ConfigData.Drone2Map.ContainsKey("EnableEUEI") -and -not($ConfigurationData.ConfigData.Drone2Map.EnableEUEI)) ){
+						$Arguments += " ENABLEEUEI=0"
+                    }
+                    
+                    ArcGIS_Install Drone2MapInstall{
+                        Name = "Drone2Map"
+                        Version = $ConfigurationData.ConfigData.Drone2MapVersion
+                        Path = $ConfigurationData.ConfigData.Drone2Map.Installer.Path
+                        Drone2MapDotnetDesktopRuntimePath = $ConfigurationData.ConfigData.Drone2Map.Installer.DotnetDesktopRuntimePath
+                        Drone2MapEdgeWebView2RuntimePath = if($ConfigurationData.ConfigData.Drone2MapVersion.Split(".")[0] -ge 2024){ $ConfigurationData.ConfigData.Drone2Map.Installer.EdgeWebView2RuntimePath }else{ $null }
+                        Extract = if($ConfigurationData.ConfigData.Drone2Map.Installer.ContainsKey("IsSelfExtracting")){ $ConfigurationData.ConfigData.Drone2Map.Installer.IsSelfExtracting }else{ $True }
+                        Arguments = $Arguments
+                        EnableMSILogging = $EnableMSILogging
+                        Ensure = "Present"
+                    }
+
+                    if ($ConfigurationData.ConfigData.Drone2Map.Installer.PatchesDir -and -not($SkipPatchInstalls)) {
+                        ArcGIS_InstallPatch Drone2MapInstallPatch
+                        {
+                            Name = "Drone2Map"
+                            Version = $ConfigurationData.ConfigData.Drone2MapVersion
+                            DownloadPatches = if($ConfigurationData.ConfigData.DownloadPatches){ $ConfigurationData.ConfigData.DownloadPatches }else{ $False }
+                            PatchesDir = $ConfigurationData.ConfigData.Drone2Map.Installer.PatchesDir
+                            PatchInstallOrder = $ConfigurationData.ConfigData.Drone2Map.Installer.PatchInstallOrder
                             Ensure = "Present"
                         }
                     }
