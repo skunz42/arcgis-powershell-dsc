@@ -38,7 +38,7 @@
                 "DataInteroperability":{
                     "Installer": {
                         "Path": "[Data Interoperability Installer Path]",
-                        "IsSelfExtracting": "[ Optional - True (Default) | False ]",
+                        "IsSelfExtracting": "[ Optional - True (Default) | False ]"
                     }
                 }
             }

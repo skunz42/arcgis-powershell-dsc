@@ -1,48 +1,25 @@
 {
   "AllNodes": [
     {
-      "NodeName": "geotec-sdsci.geotec.local",
+      "NodeName": "ps0023365.esri.com",
       "Role": [
-        "Pro"
-      ]
-    },
-    {
-      "NodeName": "geotec-analysis.geotec.local",
-      "Role": [
-        "Pro"
-      ]
-    },
-    {
-      "NodeName": "geotec-datamgmt.geotec.local",
-      "Role": [
-        "Pro"
-      ]
-    },
-    {
-      "NodeName": "geotec-geoevent.geotec.local",
-      "Role": [
-        "Pro"
+          "Drone2Map"
       ]
     }
   ],
   "ConfigData": {
-    "ProVersion": "3.2",
-    "Pro": {
-      "LicenseFilePath": "",
+    "Drone2MapVersion": "2023.2",
+    "Drone2Map": {
       "AuthorizationType": "SINGLE_USE",
       "LockAuthSettings": true,
-      "BlockAddIns": 0,
-      "SoftwareClass": "Professional",
       "PortalList": "https://www.arcgis.com",
       "AllUsers": 1,
       "EnableEUEI": true,
-      "CheckForUpdatesAtStartup": true,
       "Installer": {
-        "Path": "C:\\GEOTEC\\iac\\powershell-dsc\\installers\\ArcGISPro_32_188049.exe",
-        "DotnetDesktopRuntimeDownloadUrl": "",
+        "Path": "C:\\GEOTEC\\iac\\powershell-dsc\\installers\\ArcGIS_Drone2Map_20232_188405.exe",
         "DotnetDesktopRuntimePath": "C:\\GEOTEC\\iac\\powershell-dsc\\installers\\windowsdesktop-runtime-6.0.16-win-x64.exe",
         "IsSelfExtracting": true,
-        "InstallDir": "C:\\ArcGIS\\Pro",
+        "InstallDir": "C:\\ArcGIS\\Drone2Map",
         "PatchesDir": "",
         "PatchInstallOrder": []
       }

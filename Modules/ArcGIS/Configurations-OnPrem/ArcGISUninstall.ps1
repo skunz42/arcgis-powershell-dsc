@@ -228,6 +228,13 @@
                         Ensure = "Absent"
                     }
                 }
+                'Drone2Map' {
+                    ArcGIS_Install Drone2MapUninstall{
+                        Name = "Drone2Map"
+                        Version = $ConfigurationData.ConfigData.Drone2MapVersion
+                        Ensure = "Absent"
+                    }
+                }
                 'LicenseManager'
                 {
                     ArcGIS_Install LicenseManagerUninstall{
