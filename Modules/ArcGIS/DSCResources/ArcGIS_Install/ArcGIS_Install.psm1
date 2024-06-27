@@ -276,7 +276,7 @@ function Set-TargetResource
             $TempFolder = Join-Path ([System.IO.Path]::GetTempPath()) $ProdId
             if(Test-Path $TempFolder)
             {
-                Remove-Item -Path $TempFolder -Recurse 
+                Remove-Item -Path $TempFolder -Recurse -Force
             }
             if(-not(Test-Path $TempFolder))
             {
