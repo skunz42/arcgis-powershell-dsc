@@ -4,7 +4,8 @@
       "NodeName": "ps0023365.esri.com",
       "Role": [
           "Drone2Map"
-      ]
+      ],
+      "Drone2MapLicenseFilePath": "C:\\GEOTEC\\iac\\powershell-dsc\\installers\\Drone2MapAdv.prvc"
     }
   ],
   "ConfigData": {
