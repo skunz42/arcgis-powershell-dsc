@@ -10,6 +10,7 @@
   "ConfigData": {
     "Drone2MapVersion": "2023.2",
     "Drone2Map": {
+      "LicenseFilePath": "C:\\GEOTEC\\iac\\powershell-dsc\\installers\\Drone2MapAdv.prvc",
       "AuthorizationType": "SINGLE_USE",
       "LockAuthSettings": true,
       "PortalList": "https://www.arcgis.com",
