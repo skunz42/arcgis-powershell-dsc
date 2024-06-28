@@ -65,7 +65,7 @@ function Set-TargetResource
 		[System.String]
 		$Ensure,
 
-        [ValidateSet("Server","Portal","Desktop","Pro","LicenseManager","Monitor")]
+        [ValidateSet("Server","Portal","Desktop","Pro","Drone2Map","LicenseManager","Monitor")]
 		[System.String]
 		$Component,
 
@@ -107,9 +107,9 @@ function Set-TargetResource
         }
         Write-Verbose "RealVersion of ArcGIS Software:- $RealVersion" 
         $RealVersion = $RealVersion.Split('.')[0] + '.' + $RealVersion.Split('.')[1] 
-        $LicenseVersion = if($Component -ieq 'Pro' -or $Component -ieq 'LicenseManager'){ '10.6' }else{ $RealVersion }
+        $LicenseVersion = if($Component -ieq 'Pro' -or $Component -ieq 'Drone2Map' -or $Component -ieq 'LicenseManager'){ '10.6' }else{ $RealVersion }
         Write-Verbose "Licensing from $LicenseFilePath" 
-        if(@('Desktop', 'Pro', 'LicenseManager') -icontains $Component) {
+        if(@('Desktop', 'Pro', 'Drone2Map', 'LicenseManager') -icontains $Component) {
             Write-Verbose "Version $LicenseVersion Component $Component" 
             Invoke-LicenseSoftware -Product $Component -LicenseFilePath $LicenseFilePath `
                         -Version $LicenseVersion -LicensePassword $LicensePassword -IsSingleUse $IsSingleUse -Verbose
@@ -146,7 +146,7 @@ function Test-TargetResource
 		[System.String]
 		$Ensure,
 
-		[ValidateSet("Server","Portal","Desktop","Pro","LicenseManager","Monitor")]
+		[ValidateSet("Server","Portal","Desktop","Pro","Drone2Map","LicenseManager","Monitor")]
 		[System.String]
 		$Component,
 
@@ -192,6 +192,9 @@ function Test-TargetResource
     }
     elseif($Component -ieq 'Pro') {
         Write-Verbose "TODO:- Check for Pro license. For now forcing Software Authorization Tool to License Pro."
+    }
+    elseif($Component -ieq 'Drone2Map') {
+        Write-Verbose "TODO:- Check for Drone2Map license. For now forcing Software Authorization Tool to License Pro."
     }
     elseif($Component -ieq 'LicenseManager') {
         Write-Verbose "TODO:- Check for License Manger license. For now forcing Software Authorization Tool to License."
@@ -253,13 +256,17 @@ function Invoke-LicenseSoftware
 
     $SoftwareAuthExePath = "$env:SystemDrive\Program Files\Common Files\ArcGIS\bin\SoftwareAuthorization.exe"
     $LMReloadUtilityPath = ""
-    if(@('Desktop','Pro','LicenseManager') -icontains $Product) {
+    if(@('Desktop','Pro','Drone2Map','LicenseManager') -icontains $Product) {
         $SoftwareAuthExePath = "$env:SystemDrive\Program Files (x86)\Common Files\ArcGIS\bin\SoftwareAuthorization.exe"
         if($IsSingleUse -or ($Product -ne 'LicenseManager')){
             if($Product -ieq 'Desktop'){
                 $SoftwareAuthExePath = "$env:SystemDrive\Program Files (x86)\Common Files\ArcGIS\bin\softwareauthorization.exe"
             }elseif($Product -ieq 'Pro'){
                 $InstallLocation = (Get-ArcGISProductDetails -ProductName "ArcGIS Pro" | Where-Object {$_.Name -ieq "ArcGIS Pro"}).InstallLocation
+                $SoftwareAuthExePath = "$($InstallLocation)bin\SoftwareAuthorizationPro.exe"
+            }
+            elseif($Product -ieq 'Drone2Map'){
+                $InstallLocation = (Get-ArcGISProductDetails -ProductName "ArcGIS Drone2Map" | Where-Object {$_.Name -ieq "ArcGIS Drone2Map"}).InstallLocation
                 $SoftwareAuthExePath = "$($InstallLocation)bin\SoftwareAuthorizationPro.exe"
             }
         }else{
@@ -340,7 +347,7 @@ function Invoke-LicenseSoftware
     if($null -ne $err){
         throw $err
     }
-    if($Product -ieq 'Desktop' -or $Product -ieq 'Pro') {
+    if($Product -ieq 'Desktop' -or $Product -ieq 'Pro' -or $Product -ieq 'Drone2Map') {
         Write-Verbose "Sleeping for 2 Minutes to finish Licensing"
         Start-Sleep -Seconds 120
     }

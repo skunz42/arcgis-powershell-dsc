@@ -96,6 +96,18 @@
                         Force = $ForceLicenseUpdate
                     }                
                 }
+                'Drone2Map' 
+                {
+                    ArcGIS_License "Drone2MapLicense$($Node.NodeName)"
+                    {
+                        LicenseFilePath =  $Node.Drone2MapLicenseFilePath
+                        LicensePassword = $null
+                        IsSingleUse = $True
+                        Ensure = "Present"
+                        Component = 'Drone2Map'
+                        Force = $ForceLicenseUpdate
+                    }                
+                }
                 'LicenseManager'
                 {   
                     if($Node.LicenseManagerVersion -and $Node.LicenseManagerLicenseFilePath){
