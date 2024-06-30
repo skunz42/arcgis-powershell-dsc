@@ -905,8 +905,7 @@ function Invoke-ArcGISConfiguration
             $Drone2MapSkipLicenseStep = $true
             if($ConfigurationParamsHashtable.ConfigData.Drone2MapVersion -and $Drone2MapCheck){
                 $Drone2MapSkipLicenseStep = $false
-                if(($ConfigurationParamsHashtable.ConfigData.Drone2Map.AuthorizationType -ieq "NAMED_USER") -or 
-                ($ConfigurationParamsHashtable.ConfigData.Drone2Map.AuthorizationType -ieq "CONCURRENT_USE" -and -not($LicenseManagerCheck))){
+                if(($ConfigurationParamsHashtable.ConfigData.Drone2Map.AuthorizationType -ieq "NAMED_USER")){
                     $Drone2MapSkipLicenseStep = $true
                 }
             }

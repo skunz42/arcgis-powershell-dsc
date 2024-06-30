@@ -714,16 +714,12 @@
                 }
                 'Drone2Map'
                 {
-                    # Installation Notes: https://pro.arcgis.com/en/pro-app/get-started/arcgis-pro-installation-administration.htm
+                    # Installation Notes: https://doc.arcgis.com/en/drone2map/2023.2/get-started/silently-installing-drone2map.htm
                     $PortalList = if($ConfigurationData.ConfigData.Drone2Map.PortalList){ $ConfigurationData.ConfigData.Drone2Map.PortalList }else{ "https://arcgis.com" }
                     $Arguments = "/qn ACCEPTEULA=YES Portal_List=`"$PortalList`" AUTHORIZATION_TYPE=`"$($ConfigurationData.ConfigData.Drone2Map.AuthorizationType)`""
 
                     if (-not ([string]::IsNullOrEmpty($ConfigurationData.ConfigData.Drone2Map.Installer.InstallDir))){
                         $Arguments += " INSTALLDIR=`"$($ConfigurationData.ConfigData.Drone2Map.Installer.InstallDir)`""
-                    }
-
-                    if($ConfigurationData.ConfigData.Pro.AuthorizationType -ieq "CONCURRENT_USE"){
-                        $Arguments += " ESRI_LICENSE_HOST=`"$($ConfigurationData.ConfigData.Pro.EsriLicenseHost)`"" 
                     }
 
                     # Pro installed for all users. Per User installs for Pro not supported
