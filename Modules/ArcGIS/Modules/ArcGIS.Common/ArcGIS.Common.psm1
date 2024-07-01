@@ -1087,7 +1087,7 @@ function Get-ComponentCode
             '2024.1' = ''
             '2024.2' = '33450E32-CCE4-493D-BF57-B17308031CAF'
         }
-        CordinateSystemsData = @{
+        CoordinateSystemsData = @{
             '2.0' = ''
             '2.1' = ''
             '2.2' = ''
