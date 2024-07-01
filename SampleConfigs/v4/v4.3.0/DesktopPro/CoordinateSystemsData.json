@@ -1,0 +1,22 @@
+{
+  "AllNodes": [
+    {
+      "NodeName": "ps0023365.esri.com",
+      "Role": [
+          "CoordinateSystemsData"
+        ]
+    }
+  ],
+  "ConfigData": {
+    "CoordinateSystemsDataVersion": "3.3",
+    "CoordinateSystemsData":{
+      "AllUsers": 1,
+      "EnableEUEI": true,
+      "Installer": {
+        "Path": "C:\\GEOTEC\\iac\\powershell-dsc\\installers\\ArcGIS_Coordinate_Systems_Data_Windows_113_190137.exe",
+        "IsSelfExtracting": true,
+        "InstallDir": "C:\\ArcGIS\\CoordinateSystemsData"
+      }
+    }
+  }
+}

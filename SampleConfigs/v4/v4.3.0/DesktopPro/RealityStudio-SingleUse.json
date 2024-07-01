@@ -3,15 +3,13 @@
     {
       "NodeName": "ps0023365.esri.com",
       "Role": [
-          "RealityStudio",
-          "CoordinateSystemsData"
+          "RealityStudio"
       ],
       "RealityStudioLicenseFilePath": "C:\\GEOTEC\\iac\\powershell-dsc\\installers\\RealityStudio.prvc"
     }
   ],
   "ConfigData": {
     "RealityStudioVersion": "2024.2",
-    "CoordinateSystemsDataVersion": "3.3",
     "RealityStudio": {
       "LicenseFilePath": "C:\\GEOTEC\\iac\\powershell-dsc\\installers\\RealityStudio.prvc",
       "AuthorizationType": "SINGLE_USE",
@@ -27,15 +25,6 @@
         "InstallDir": "C:\\ArcGIS\\RealityStudio",
         "PatchesDir": "",
         "PatchInstallOrder": []
-      }
-    },
-    "CoordinateSystemsData":{
-      "AllUsers": 1,
-      "EnableEUEI": true,
-      "Installer": {
-        "Path": "C:\\GEOTEC\\iac\\powershell-dsc\\installers\\ArcGIS_Coordinate_Systems_Data_Windows_113_190137.exe",
-        "IsSelfExtracting": true,
-        "InstallDir": "C:\\ArcGIS\\CoordinateSystemsData"
       }
     }
   }

@@ -809,7 +809,7 @@
                         }
                     }
                 }
-                'CordinateSystemsData'
+                'CoordinateSystemsData'
                 {
                     $Arguments = "/qn ACCEPTEULA=YES"
 

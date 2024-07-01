@@ -628,6 +628,9 @@ function Get-DownloadsInstallsConfigurationData
             $NodeToAdd["DataStoreTypes"] = $Node.DataStoreTypes 
         }
         $ConfigData.AllNodes += $NodeToAdd
+        Write-Host "!!!!!!!!!!!!!!!!!!!!!!!"
+        Write-Host $ConfigData.AllNodes[0].NodeName
+        Write-Host $ConfigData.AllNodes[0].Role
     }
 
     if($ConfigData.ConfigData.Credentials){
@@ -859,6 +862,9 @@ function Invoke-ArcGISConfiguration
             ServiceCredentialIsDomainAccount = $ServiceCredentialIsDomainAccount
             ServiceCredentialIsMSA = $ServiceCredentialIsMSA
         }
+
+        Write-Output "@@@@@@@@@@@@@@@@@@"
+        Write-Output $InstallArgs.ConfigurationData.AllNodes[0].NodeName
         
         if(-not($Mode -ieq "Uninstall")){
             $InstallArgs["SkipPatchInstalls"] = if($ConfigurationParamsHashtable.ConfigData.SkipPatchInstalls){ $ConfigurationParamsHashtable.ConfigData.SkipPatchInstalls }else{ $False }
@@ -879,7 +885,6 @@ function Invoke-ArcGISConfiguration
             $ProCheck = (($ConfigurationParamsHashtable.AllNodes | Where-Object { $_.Role -icontains 'Pro' }  | Measure-Object).Count -gt 0)
             $Drone2MapCheck = (($ConfigurationParamsHashtable.AllNodes | Where-Object { $_.Role -icontains 'Drone2Map' }  | Measure-Object).Count -gt 0)
             $RealityStudioCheck = (($ConfigurationParamsHashtable.AllNodes | Where-Object { $_.Role -icontains 'RealityStudio' }  | Measure-Object).Count -gt 0)
-            $CoordinateSystemsDataCheck = (($ConfigurationParamsHashtable.AllNodes | Where-Object { $_.Role -icontains 'CoordinateSystemsData' }  | Measure-Object).Count -gt 0)
             $LicenseManagerCheck = (($ConfigurationParamsHashtable.AllNodes | Where-Object { $_.Role -icontains 'LicenseManager' } | Measure-Object).Count -gt 0)
             
             $EnterpriseSkipLicenseStep = $true
@@ -920,14 +925,12 @@ function Invoke-ArcGISConfiguration
                 $RealityStudioSkipLicenseStep = $false
             }
 
-            $CoordinateSystemsDataSkipLicenseCheck = $true
-
             $LicenseManagerSkipLicenseStep = $true
             if($ConfigurationParamsHashtable.ConfigData.LicenseManagerVersion -and $LicenseManagerCheck -and $ConfigurationParamsHashtable.ConfigData.LicenseManager.LicenseFilePath){
                 $LicenseManagerSkipLicenseStep = $false
             }
 
-            if(-not($EnterpriseSkipLicenseStep -and $DesktopSkipLicenseStep -and $ProSkipLicenseStep -and $Drone2MapSkipLicenseStep -and $RealityStudioSkipLicenseStep -and $CoordinateSystemsDataSkipLicenseCheck -and $LicenseManagerSkipLicenseStep)){
+            if(-not($EnterpriseSkipLicenseStep -and $DesktopSkipLicenseStep -and $ProSkipLicenseStep -and $Drone2MapSkipLicenseStep -and $RealityStudioSkipLicenseStep -and $LicenseManagerSkipLicenseStep)){
                 $LicenseCD = @{
                     AllNodes = @() 
                 }
@@ -1229,7 +1232,7 @@ function Invoke-ArcGISConfiguration
 
             #Configure Deployment
             $SkipConfigureStep = $False
-            if(($DesktopCheck -or $ProCheck -or $Drone2MapCheck -or $RealityStudioCheck -or $CoordinateSystemsDataCheck -or $LicenseManagerCheck) -and -not($ServerCheck -or $PortalCheck)){
+            if(($DesktopCheck -or $ProCheck -or $Drone2MapCheck -or $RealityStudioCheck -or $LicenseManagerCheck) -and -not($ServerCheck -or $PortalCheck)){
                 $SkipConfigureStep = $True
             }
 
