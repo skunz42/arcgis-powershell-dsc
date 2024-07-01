@@ -235,6 +235,13 @@
                         Ensure = "Absent"
                     }
                 }
+                'RealityStudio' {
+                    ArcGIS_Install RealityStudioUninstall{
+                        Name = "RealityStudio"
+                        Version = $ConfigurationData.ConfigData.RealityStudioVersion
+                        Ensure = "Absent"
+                    }
+                }
                 'LicenseManager'
                 {
                     ArcGIS_Install LicenseManagerUninstall{

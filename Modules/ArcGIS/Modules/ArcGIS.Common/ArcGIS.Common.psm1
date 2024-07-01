@@ -803,6 +803,8 @@ function Get-ArcGISProductName
         $ProductName = 'ArcGIS Pro'
     }elseif($Name -ieq 'Drone2Map' -or $Name -ieq "ArcGIS Drone2Map"){
         $ProductName = 'ArcGIS Drone2Map'
+    }elseif($Name -ieq 'RealityStudio' -or $Name -ieq "ArcGIS Reality Studio"){
+        $ProductName = 'ArcGIS Reality Studio'
     }elseif($Name -ieq 'Desktop' -or $Name -ieq "ArcGIS Desktop"){
         $ProductName = 'ArcGIS Desktop'
     }elseif($Name -ieq "Web Styles" -or $Name -ieq 'WebStyles'){
@@ -877,7 +879,7 @@ function Get-ComponentCode
        [CmdletBinding()]
        param
        (
-        [ValidateSet("Server","Portal","DataStore","GeoEvent","NotebookServer","MissionServer","WorkflowManagerServer", "WorkflowManagerWebApp","Monitor", "WebStyles", "WebAdaptorIIS", "WebAdaptorJava","Desktop","Pro","Drone2Map","LicenseManager","NotebookServerSamplesData","Insights","ServerDataInteroperability","DesktopDataInteroperability","ProDataInteroperability","ServerDataReviewer","DesktopDataReviewer","ServerWorkflowManagerClassic","DesktopWorkflowManagerClassic","ProWorkflowMangerClassic", "ServerLocationReferencing","DesktopLocationReferencing","ServerMappingChartingSolution","DesktopMappingChartingSolution","DesktopBackgroundGP64Bit","VideoServer","ServerDeepLearningLibraries","ProDeepLearningLibraries")]
+        [ValidateSet("Server","Portal","DataStore","GeoEvent","NotebookServer","MissionServer","WorkflowManagerServer", "WorkflowManagerWebApp","Monitor", "WebStyles", "WebAdaptorIIS", "WebAdaptorJava","Desktop","Pro","Drone2Map","RealityStudio","LicenseManager","NotebookServerSamplesData","Insights","ServerDataInteroperability","DesktopDataInteroperability","ProDataInteroperability","ServerDataReviewer","DesktopDataReviewer","ServerWorkflowManagerClassic","DesktopWorkflowManagerClassic","ProWorkflowMangerClassic", "ServerLocationReferencing","DesktopLocationReferencing","ServerMappingChartingSolution","DesktopMappingChartingSolution","DesktopBackgroundGP64Bit","VideoServer","ServerDeepLearningLibraries","ProDeepLearningLibraries")]
         [parameter(Mandatory = $true)]
         [System.String]
         $ComponentName,
@@ -1077,6 +1079,11 @@ function Get-ComponentCode
             '2023.1' = 'BB670C8B-C096-4A17-9665-3F8CBA150332'
             '2023.2' = 'DBEFE4ED-2617-442C-BCDD-E7FD1091D2F0'
             '2024.1' = ''
+        }
+        RealityStudio = @{
+            '2023.1' = ''
+            '2024.1' = ''
+            '2024.2' = '33450E32-CCE4-493D-BF57-B17308031CAF'
         }
         WebAdaptorIIS = @{
             '10.4' = @('B83D9E06-B57C-4B26-BF7A-004BE10AB2D5','E2C783F3-6F85-4B49-BFCD-6D6A57A2CFCE','901578F9-BC82-498D-A008-EC3F53F6C943','E3849BEC-6CAF-463F-8EFA-169116A32554','EE889E4F-85C7-4B8A-9DAA-5103C9E14FD6','89D96D88-CC2F-4E9B-84DD-5C976A4741EE','0913DB77-F27B-4FDE-9F51-01BB97BBEBB9','99B6A03C-D208-4E2E-B374-BA7972334396','A0F3D072-0CD1-43D7-AFDA-8F47B15C217C','0FE26871-21C3-4561-B52E-A8FED5C8E821','1D1F3C15-F368-44AF-9728-6CF031D478AF','CE5EC52D-B54D-4381-9F6E-2C08F7721620','E71AEC5B-25F0-47E5-B52C-847A1B779E48','5DA1F056-A3F1-46D5-8F2E-74E72F85B51B','1EB3D37A-902A-43E2-9EAA-1B43BA10C369','839FFEB7-76B5-4CBB-A05E-E2276FC3421D','594E1C33-1C6D-49B4-A83F-2A780193B75F','34330B0C-34CD-4DCF-A68D-FDE7A1834659','42A96EC7-7CA9-4F68-B946-E9BF84713605','A1A8DAE4-B6F9-446F-8F6A-487F1E07A434','3BF277C6-6A88-4F72-A08C-54F1E45F44E5')

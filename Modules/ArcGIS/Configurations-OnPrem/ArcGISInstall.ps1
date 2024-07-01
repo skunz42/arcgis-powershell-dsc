@@ -87,6 +87,10 @@
         {
             $NodeRoleArray += "Drone2Map"
         }
+        if($Node.Role -icontains "RealityStudio")
+        {
+            $NodeRoleArray += "RealityStudio"
+        }
         if($Node.Role -icontains "LicenseManager")
         {
             $NodeRoleArray += "LicenseManager"
@@ -756,6 +760,52 @@
                             Ensure = "Present"
                         }
                     }
+                }
+                'RealityStudio'
+                {
+                    $PortalList = if($ConfigurationData.ConfigData.RealityStudio.PortalList){ $ConfigurationData.ConfigData.RealityStudio.PortalList }else{ "https://arcgis.com" }
+                    $Arguments = "/qn ACCEPTEULA=YES Portal_List=`"$PortalList`" AUTHORIZATION_TYPE=`"$($ConfigurationData.ConfigData.RealityStudio.AuthorizationType)`""
+
+                    if (-not ([string]::IsNullOrEmpty($ConfigurationData.ConfigData.RealityStudio.Installer.InstallDir))){
+                        $Arguments += " INSTALLDIR=`"$($ConfigurationData.ConfigData.RealityStudio.Installer.InstallDir)`""
+                    }
+
+                    # Pro installed for all users. Per User installs for Pro not supported
+                    $Arguments += " ALLUSERS=1"
+
+                    if(-not($ConfigurationData.ConfigData.RealityStudio.ContainsKey("LockAuthSettings")) -or ($ConfigurationData.ConfigData.RealityStudio.ContainsKey("LockAuthSettings") -and -not($ConfigurationData.ConfigData.RealityStudio.LockAuthSettings)) ){
+						$Arguments += " LOCK_AUTH_SETTINGS=False"
+                    }
+					
+					if(-not($ConfigurationData.ConfigData.RealityStudio.ContainsKey("EnableEUEI")) -or ($ConfigurationData.ConfigData.RealityStudio.ContainsKey("EnableEUEI") -and -not($ConfigurationData.ConfigData.RealityStudio.EnableEUEI)) ){
+						$Arguments += " ENABLEEUEI=0"
+                    }
+                    
+                    ArcGIS_Install RealityStudioInstall{
+                        Name = "RealityStudio"
+                        Version = $ConfigurationData.ConfigData.RealityStudioVersion
+                        Path = $ConfigurationData.ConfigData.RealityStudio.Installer.Path
+                        RealityStudioDotnetDesktopRuntimePath = $ConfigurationData.ConfigData.RealityStudio.Installer.DotnetDesktopRuntimePath
+                        RealityStudioEdgeWebView2RuntimePath = if($ConfigurationData.ConfigData.RealityStudioVersion.Split(".")[0] -ge 2024 -and $ConfigurationData.ConfigData.RealityStudioVersion.Split(".")[1] -ge 2){ $ConfigurationData.ConfigData.RealityStudio.Installer.EdgeWebView2RuntimePath }else{ $null }
+                        Extract = if($ConfigurationData.ConfigData.RealityStudio.Installer.ContainsKey("IsSelfExtracting")){ $ConfigurationData.ConfigData.RealityStudio.Installer.IsSelfExtracting }else{ $True }
+                        Arguments = $Arguments
+                        EnableMSILogging = $EnableMSILogging
+                        Ensure = "Present"
+                    }
+
+                    if ($ConfigurationData.ConfigData.RealityStudio.Installer.PatchesDir -and -not($SkipPatchInstalls)) {
+                        ArcGIS_InstallPatch RealityStudioInstallPatch
+                        {
+                            Name = "RealityStudio"
+                            Version = $ConfigurationData.ConfigData.RealityStudioVersion
+                            DownloadPatches = if($ConfigurationData.ConfigData.DownloadPatches){ $ConfigurationData.ConfigData.DownloadPatches }else{ $False }
+                            PatchesDir = $ConfigurationData.ConfigData.RealityStudio.Installer.PatchesDir
+                            PatchInstallOrder = $ConfigurationData.ConfigData.RealityStudio.Installer.PatchInstallOrder
+                            Ensure = "Present"
+                        }
+                    }
+
+                    # TODO - Coordinate Systems Data
                 }
                 'LicenseManager'
                 {

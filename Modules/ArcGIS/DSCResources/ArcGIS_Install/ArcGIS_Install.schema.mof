@@ -16,6 +16,8 @@ class ArcGIS_Install : OMI_BaseResource
 	[Write] String ProEdgeWebView2RuntimePath;
 	[Write] String Drone2MapDotnetDesktopRuntimePath;
 	[Write] String Drone2MapEdgeWebView2RuntimePath;
+	[Write] String RealityStudioDotnetDesktopRuntimePath;
+	[Write] String RealityStudioEdgeWebView2RuntimePath;
 	[Write, EmbeddedInstance("MSFT_Credential")] String ServiceCredential;
 	[Write] Boolean ServiceCredentialIsDomainAccount;
 	[Write] Boolean ServiceCredentialIsMSA;

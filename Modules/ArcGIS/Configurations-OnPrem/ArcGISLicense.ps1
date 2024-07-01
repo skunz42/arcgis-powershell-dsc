@@ -108,6 +108,18 @@
                         Force = $ForceLicenseUpdate
                     }                
                 }
+                'RealityStudio' 
+                {
+                    ArcGIS_License "RealityStudioLicense$($Node.NodeName)"
+                    {
+                        LicenseFilePath =  $Node.RealityStudioLicenseFilePath
+                        LicensePassword = $null
+                        IsSingleUse = $True
+                        Ensure = "Present"
+                        Component = 'RealityStudio'
+                        Force = $ForceLicenseUpdate
+                    }                
+                }
                 'LicenseManager'
                 {   
                     if($Node.LicenseManagerVersion -and $Node.LicenseManagerLicenseFilePath){

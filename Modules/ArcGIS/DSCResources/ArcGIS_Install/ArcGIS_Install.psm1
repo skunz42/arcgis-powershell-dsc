@@ -86,6 +86,14 @@ function Get-TargetResource
 		[System.String]
         $Drone2MapEdgeWebView2RuntimePath,
 
+        [parameter(Mandatory = $false)]
+		[System.String]
+        $RealityStudioDotnetDesktopRuntimePath,
+
+        [parameter(Mandatory = $false)]
+		[System.String]
+        $RealityStudioEdgeWebView2RuntimePath,
+
         [Parameter(Mandatory=$false)]
         [System.Management.Automation.PSCredential]
         $ServiceCredential,
@@ -169,11 +177,11 @@ function Set-TargetResource
 
         [parameter(Mandatory = $false)]
 		[System.String]
-        $Drone2MapDotnetDesktopRuntimePath,
+        $RealityStudioDotnetDesktopRuntimePath,
 
         [parameter(Mandatory = $false)]
 		[System.String]
-        $Drone2MapEdgeWebView2RuntimePath,
+        $RealityStudioEdgeWebView2RuntimePath,
 
         [Parameter(Mandatory=$false)]
         [System.Management.Automation.PSCredential]
@@ -232,6 +240,11 @@ function Set-TargetResource
             Invoke-StartProcess -ExecPath $Drone2MapDotnetDesktopRuntimePath -Arguments "/install /quiet /norestart" -Verbose
         }
 
+        if($Name -ieq 'RealityStudio' -and $RealityStudioDotnetDesktopRuntimePath -and (Test-Path $RealityStudioDotnetDesktopRuntimePath)){
+            # Install DotNet Desktop Runtime - exe package
+            Invoke-StartProcess -ExecPath $RealityStudioDotnetDesktopRuntimePath -Arguments "/install /quiet /norestart" -Verbose
+        }
+
         if($Name -ieq 'Pro' -and $ProEdgeWebView2RuntimePath -and (Test-Path $ProEdgeWebView2RuntimePath)){
             # Check if Edge WebView 2 Runtime is already installed
             $EdgeWebView2RuntimeInstalled = "HKEY_CURRENT_USER\Software\Microsoft\EdgeUpdate\Clients\{F3017226-FE2A-4295-8BDF-00C3A9A7E4C5}"
@@ -253,6 +266,19 @@ function Set-TargetResource
             if(-not(Test-Path $EdgeWebView2RuntimeInstalled) -and -not(Test-Path $EdgeWebView2Runtime64Installed) -and -not(Test-Path $EdgeWebView2Runtime32Installed)){
                 # Install Edge Web View 2 Runtime - exe package
                 Invoke-StartProcess -ExecPath $Drone2MapEdgeWebView2RuntimePath -Arguments "/silent /install" -Verbose
+            }else{
+                Write-Verbose "Edge WebView 2 Runtime is already installed"
+            }
+        }
+
+        if($Name -ieq 'RealityStudio' -and $RealityStudioEdgeWebView2RuntimePath -and (Test-Path $RealityStudioEdgeWebView2RuntimePath)){
+            # Check if Edge WebView 2 Runtime is already installed
+            $EdgeWebView2RuntimeInstalled = "HKEY_CURRENT_USER\Software\Microsoft\EdgeUpdate\Clients\{F3017226-FE2A-4295-8BDF-00C3A9A7E4C5}"
+            $EdgeWebView2Runtime64Installed = "HKEY_LOCAL_MACHINE\SOFTWARE\WOW6432Node\Microsoft\EdgeUpdate\Clients\{F3017226-FE2A-4295-8BDF-00C3A9A7E4C5}"
+            $EdgeWebView2Runtime32Installed = "HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\EdgeUpdate\Clients\{F3017226-FE2A-4295-8BDF-00C3A9A7E4C5}"
+            if(-not(Test-Path $EdgeWebView2RuntimeInstalled) -and -not(Test-Path $EdgeWebView2Runtime64Installed) -and -not(Test-Path $EdgeWebView2Runtime32Installed)){
+                # Install Edge Web View 2 Runtime - exe package
+                Invoke-StartProcess -ExecPath $RealityStudioEdgeWebView2RuntimePath -Arguments "/silent /install" -Verbose
             }else{
                 Write-Verbose "Edge WebView 2 Runtime is already installed"
             }
@@ -535,11 +561,11 @@ function Test-TargetResource
 
         [parameter(Mandatory = $false)]
 		[System.String]
-        $Drone2MapDotnetDesktopRuntimePath,
+        $RealityStudioDotnetDesktopRuntimePath,
 
         [parameter(Mandatory = $false)]
 		[System.String]
-        $Drone2MapEdgeWebView2RuntimePath,
+        $RealityStudioEdgeWebView2RuntimePath,
 
         [Parameter(Mandatory=$false)]
         [System.Management.Automation.PSCredential]

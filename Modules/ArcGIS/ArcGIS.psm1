@@ -707,6 +707,9 @@ function Get-DownloadsInstallsConfigurationData
     if($ConfigData.ConfigData.Drone2Map -and $ConfigData.ConfigData.Drone2Map.LicenseFilePath){
         $ConfigData.ConfigData.Drone2Map.Remove("LicenseFilePath")
     }
+    if($ConfigData.ConfigData.RealityStudio -and $ConfigData.ConfigData.RealityStudio.LicenseFilePath){
+        $ConfigData.ConfigData.RealityStudio.Remove("LicenseFilePath")
+    }
     if($ConfigData.ConfigData.Desktop -and $ConfigData.ConfigData.Desktop.LicenseFilePath){
         $ConfigData.ConfigData.Desktop.Remove("LicenseFilePath")
     }
@@ -875,6 +878,7 @@ function Invoke-ArcGISConfiguration
             $DesktopCheck = (($ConfigurationParamsHashtable.AllNodes | Where-Object { $_.Role -icontains 'Desktop' }  | Measure-Object).Count -gt 0)
             $ProCheck = (($ConfigurationParamsHashtable.AllNodes | Where-Object { $_.Role -icontains 'Pro' }  | Measure-Object).Count -gt 0)
             $Drone2MapCheck = (($ConfigurationParamsHashtable.AllNodes | Where-Object { $_.Role -icontains 'Drone2Map' }  | Measure-Object).Count -gt 0)
+            $RealityStudioCheck = (($ConfigurationParamsHashtable.AllNodes | Where-Object { $_.Role -icontains 'RealityStudio' }  | Measure-Object).Count -gt 0)
             $LicenseManagerCheck = (($ConfigurationParamsHashtable.AllNodes | Where-Object { $_.Role -icontains 'LicenseManager' } | Measure-Object).Count -gt 0)
             
             $EnterpriseSkipLicenseStep = $true
@@ -910,12 +914,17 @@ function Invoke-ArcGISConfiguration
                 }
             }
 
+            $RealityStudioSkipLicenseStep = $true
+            if($ConfigurationParamsHashtable.ConfigData.RealityStudioVersion -and $RealityStudioCheck){
+                $RealityStudioSkipLicenseStep = $false
+            }
+
             $LicenseManagerSkipLicenseStep = $true
             if($ConfigurationParamsHashtable.ConfigData.LicenseManagerVersion -and $LicenseManagerCheck -and $ConfigurationParamsHashtable.ConfigData.LicenseManager.LicenseFilePath){
                 $LicenseManagerSkipLicenseStep = $false
             }
 
-            if(-not($EnterpriseSkipLicenseStep -and $DesktopSkipLicenseStep -and $ProSkipLicenseStep -and $Drone2MapSkipLicenseStep -and $LicenseManagerSkipLicenseStep)){
+            if(-not($EnterpriseSkipLicenseStep -and $DesktopSkipLicenseStep -and $ProSkipLicenseStep -and $Drone2MapSkipLicenseStep -and $RealityStudioSkipLicenseStep -and $LicenseManagerSkipLicenseStep)){
                 $LicenseCD = @{
                     AllNodes = @() 
                 }
@@ -1159,6 +1168,46 @@ function Invoke-ArcGISConfiguration
                         }
                     }
 
+                    if($Node.Role -icontains "RealityStudio"){
+                        if($ConfigurationParamsHashtable.ConfigData.RealityStudio.AuthorizationType -ieq "SINGLE_USE"){
+                            $NodeToAdd.Role += "RealityStudio"
+
+                            $RealityStudioLicensePassword = $null
+                            if($ConfigurationParamsHashtable.ConfigData.RealityStudio.LicensePasswordFilePath){
+                                if(-not(Test-Path $ConfigurationParamsHashtable.ConfigData.RealityStudio.LicensePasswordFilePath)){
+                                    throw "Password file $($ConfigurationParamsHashtable.ConfigData.RealityStudio.LicensePasswordFilePath) does not exist."
+                                }
+                                $RealityStudioLicensePassword = (Get-Content $ConfigurationParamsHashtable.ConfigData.RealityStudio.LicensePasswordFilePath | ConvertTo-SecureString )
+                            }elseif($ConfigurationParamsHashtable.ConfigData.RealityStudio.LicensePasswordEnvironmentVariableName){
+                                $RealityStudioLicensePassword = (Get-PasswordFromEnvironmentVariable -EnvironmentVariableName $ConfigurationParamsHashtable.ConfigData.RealityStudio.LicensePasswordEnvironmentVariableName)
+                            }elseif($ConfigurationParamsHashtable.ConfigData.RealityStudio.LicensePassword){
+                                $RealityStudioLicensePassword = (ConvertTo-SecureString $ConfigurationParamsHashtable.ConfigData.RealityStudio.LicensePassword -AsPlainText -Force)
+                            }
+
+                            # Per Node - Reality Studio
+                            if($Node.RealityStudioLicenseFilePath)
+                            {
+                                $RealityStudioLicenseFilePath = $Node.RealityStudioLicenseFilePath
+                                $RealityStudioLicensePassword = $null
+                                if($Node.RealityStudioLicensePasswordFilePath){
+                                    if(-not(Test-Path $Node.RealityStudioLicensePasswordFilePath)){
+                                        throw "Password file $($Node.RealityStudioLicensePasswordFilePath) does not exist."
+                                    }
+                                    $RealityStudioLicensePassword = (Get-Content $Node.RealityStudioLicensePasswordFilePath | ConvertTo-SecureString )
+                                }elseif($Node.RealityStudioLicensePasswordEnvironmentVariableName){
+                                    $RealityStudioLicensePassword = (Get-PasswordFromEnvironmentVariable -EnvironmentVariableName $Node.RealityStudioLicensePasswordEnvironmentVariableName)
+                                }elseif($Node.RealityStudioLicensePassword){
+                                    $RealityStudioLicensePassword = (ConvertTo-SecureString $Node.RealityStudioLicensePassword -AsPlainText -Force)
+                                }
+                            }
+
+                            $NodeToAdd["RealityStudioLicenseFilePath"] = $RealityStudioLicenseFilePath
+                            if($null -ne $RealityStudioLicensePassword){
+                                $NodeToAdd["RealityStudioLicensePassword"] = New-Object -TypeName System.Management.Automation.PSCredential -ArgumentList ("PlaceHolder", $RealityStudioLicensePassword)
+                            }
+                        }
+                    }
+
                     if($Node.Role -icontains "LicenseManager"){
                         $NodeToAdd.Role += "LicenseManager"
                         if($ConfigurationParamsHashtable.ConfigData.LicenseManager -and $ConfigurationParamsHashtable.ConfigData.LicenseManager.LicenseFilePath){
@@ -1177,7 +1226,7 @@ function Invoke-ArcGISConfiguration
 
             #Configure Deployment
             $SkipConfigureStep = $False
-            if(($DesktopCheck -or $ProCheck -or $Drone2MapCheck -or $LicenseManagerCheck) -and -not($ServerCheck -or $PortalCheck)){
+            if(($DesktopCheck -or $ProCheck -or $Drone2MapCheck -or $RealityStudioCheck -or $LicenseManagerCheck) -and -not($ServerCheck -or $PortalCheck)){
                 $SkipConfigureStep = $True
             }
 
