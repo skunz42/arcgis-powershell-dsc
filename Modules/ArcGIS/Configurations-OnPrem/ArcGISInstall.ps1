@@ -793,7 +793,22 @@
                         Ensure = "Present"
                     }
 
-                    if ($ConfigurationData.ConfigData.RealityStudio.Installer.PatchesDir -and -not($SkipPatchInstalls)) {
+                    if($ConfigurationData.ConfigData.RealityStudio.CoordinateSystemsData){
+                        $CoordinateSystemsData = $ConfigurationData.ConfigData.RealityStudio.CoordinateSystemsData
+
+                        ArcGIS_Install RealityStudioInstallCoordinateSystemsData
+                        {
+                            Name = "CoordinateSystemsData"
+                            Version = $ConfigurationData.ConfigData.CoordinateSystemsDataVersion
+                            Path = $CoordinateSystemsData.Value.Installer.Path
+                            Extract = if($CoordinateSystemsData.Value.Installer.ContainsKey("IsSelfExtracting")){ $CoordinateSystemsData.Value.Installer.IsSelfExtracting }else{ $True }
+                            Arguments = $Arguments
+                            EnableMSILogging = $EnableMSILogging
+                            Ensure = "Present"
+                        }
+                    }
+
+                    if($ConfigurationData.ConfigData.RealityStudio.Installer.PatchesDir -and -not($SkipPatchInstalls)) {
                         ArcGIS_InstallPatch RealityStudioInstallPatch
                         {
                             Name = "RealityStudio"
@@ -804,8 +819,6 @@
                             Ensure = "Present"
                         }
                     }
-
-                    # TODO - Coordinate Systems Data
                 }
                 'LicenseManager'
                 {
