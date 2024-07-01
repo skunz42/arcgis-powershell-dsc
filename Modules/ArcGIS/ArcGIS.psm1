@@ -628,9 +628,6 @@ function Get-DownloadsInstallsConfigurationData
             $NodeToAdd["DataStoreTypes"] = $Node.DataStoreTypes 
         }
         $ConfigData.AllNodes += $NodeToAdd
-        Write-Host "!!!!!!!!!!!!!!!!!!!!!!!"
-        Write-Host $ConfigData.AllNodes[0].NodeName
-        Write-Host $ConfigData.AllNodes[0].Role
     }
 
     if($ConfigData.ConfigData.Credentials){
@@ -862,9 +859,6 @@ function Invoke-ArcGISConfiguration
             ServiceCredentialIsDomainAccount = $ServiceCredentialIsDomainAccount
             ServiceCredentialIsMSA = $ServiceCredentialIsMSA
         }
-
-        Write-Output "@@@@@@@@@@@@@@@@@@"
-        Write-Output $InstallArgs.ConfigurationData.AllNodes[0].NodeName
         
         if(-not($Mode -ieq "Uninstall")){
             $InstallArgs["SkipPatchInstalls"] = if($ConfigurationParamsHashtable.ConfigData.SkipPatchInstalls){ $ConfigurationParamsHashtable.ConfigData.SkipPatchInstalls }else{ $False }

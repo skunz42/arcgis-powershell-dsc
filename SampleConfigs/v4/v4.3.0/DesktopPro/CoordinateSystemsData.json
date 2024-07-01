@@ -2,9 +2,7 @@
   "AllNodes": [
     {
       "NodeName": "ps0023365.esri.com",
-      "Role": [
-          "CoordinateSystemsData"
-        ]
+      "Role": ["CoordinateSystemsData"]
     }
   ],
   "ConfigData": {

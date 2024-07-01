@@ -820,7 +820,7 @@
                     # Pro installed for all users. Per User installs for Pro not supported
                     $Arguments += " ALLUSERS=1"
 					
-					if(-not($ConfigurationData.ConfigData.RealityStudio.ContainsKey("EnableEUEI")) -or ($ConfigurationData.ConfigData.RealityStudio.ContainsKey("EnableEUEI") -and -not($ConfigurationData.ConfigData.RealityStudio.EnableEUEI)) ){
+					if(-not($ConfigurationData.ConfigData.CoordinateSystemsData.ContainsKey("EnableEUEI")) -or ($ConfigurationData.ConfigData.CoordinateSystemsData.ContainsKey("EnableEUEI") -and -not($ConfigurationData.ConfigData.CoordinateSystemsData.EnableEUEI)) ){
 						$Arguments += " ENABLEEUEI=0"
                     }
                     
