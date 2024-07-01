@@ -561,6 +561,14 @@ function Test-TargetResource
 
         [parameter(Mandatory = $false)]
 		[System.String]
+        $Drone2MapDotnetDesktopRuntimePath,
+
+        [parameter(Mandatory = $false)]
+		[System.String]
+        $Drone2MapEdgeWebView2RuntimePath,
+
+        [parameter(Mandatory = $false)]
+		[System.String]
         $RealityStudioDotnetDesktopRuntimePath,
 
         [parameter(Mandatory = $false)]

@@ -20,6 +20,7 @@
       "Installer": {
         "Path": "C:\\GEOTEC\\iac\\powershell-dsc\\installers\\ArcGIS_Reality_Studio_20242_190685.exe",
         "DotnetDesktopRuntimePath": "C:\\GEOTEC\\iac\\powershell-dsc\\installers\\windowsdesktop-runtime-6.0.16-win-x64.exe",
+        "EdgeWebView2RuntimePath": "C:\\GEOTEC\\iac\\powershell-dsc\\installers\\MicrosoftEdgeWebView2RuntimeInstallerX64.exe",
         "CoordinateSystemsDataPath": "C:\\GEOTEC\\iac\\powershell-dsc\\installers\\ArcGIS_Coordinate_Systems_Data_Windows_113_190137.exe",
         "IsSelfExtracting": true,
         "InstallDir": "C:\\ArcGIS\\RealityStudio",
