@@ -879,6 +879,7 @@ function Invoke-ArcGISConfiguration
             $ProCheck = (($ConfigurationParamsHashtable.AllNodes | Where-Object { $_.Role -icontains 'Pro' }  | Measure-Object).Count -gt 0)
             $Drone2MapCheck = (($ConfigurationParamsHashtable.AllNodes | Where-Object { $_.Role -icontains 'Drone2Map' }  | Measure-Object).Count -gt 0)
             $RealityStudioCheck = (($ConfigurationParamsHashtable.AllNodes | Where-Object { $_.Role -icontains 'RealityStudio' }  | Measure-Object).Count -gt 0)
+            $CoordinateSystemsDataCheck = (($ConfigurationParamsHashtable.AllNodes | Where-Object { $_.Role -icontains 'CoordinateSystemsData' }  | Measure-Object).Count -gt 0)
             $LicenseManagerCheck = (($ConfigurationParamsHashtable.AllNodes | Where-Object { $_.Role -icontains 'LicenseManager' } | Measure-Object).Count -gt 0)
             
             $EnterpriseSkipLicenseStep = $true
@@ -919,12 +920,14 @@ function Invoke-ArcGISConfiguration
                 $RealityStudioSkipLicenseStep = $false
             }
 
+            $CoordinateSystemsDataSkipLicenseCheck = $true
+
             $LicenseManagerSkipLicenseStep = $true
             if($ConfigurationParamsHashtable.ConfigData.LicenseManagerVersion -and $LicenseManagerCheck -and $ConfigurationParamsHashtable.ConfigData.LicenseManager.LicenseFilePath){
                 $LicenseManagerSkipLicenseStep = $false
             }
 
-            if(-not($EnterpriseSkipLicenseStep -and $DesktopSkipLicenseStep -and $ProSkipLicenseStep -and $Drone2MapSkipLicenseStep -and $RealityStudioSkipLicenseStep -and $LicenseManagerSkipLicenseStep)){
+            if(-not($EnterpriseSkipLicenseStep -and $DesktopSkipLicenseStep -and $ProSkipLicenseStep -and $Drone2MapSkipLicenseStep -and $RealityStudioSkipLicenseStep -and $CoordinateSystemsDataSkipLicenseCheck -and $LicenseManagerSkipLicenseStep)){
                 $LicenseCD = @{
                     AllNodes = @() 
                 }
@@ -1226,7 +1229,7 @@ function Invoke-ArcGISConfiguration
 
             #Configure Deployment
             $SkipConfigureStep = $False
-            if(($DesktopCheck -or $ProCheck -or $Drone2MapCheck -or $RealityStudioCheck -or $LicenseManagerCheck) -and -not($ServerCheck -or $PortalCheck)){
+            if(($DesktopCheck -or $ProCheck -or $Drone2MapCheck -or $RealityStudioCheck -or $CoordinateSystemsDataCheck -or $LicenseManagerCheck) -and -not($ServerCheck -or $PortalCheck)){
                 $SkipConfigureStep = $True
             }
 

@@ -236,15 +236,16 @@
                     }
                 }
                 'RealityStudio' {
-                    ArcGIS_Install CoordinateSystemsDataUninstall{
-                        Name = "CoordinateSystemsData"
-                        Version = $ConfigurationData.ConfigData.CoordinateSystemsDataVersion
-                        Ensure = "Absent"
-                    }
-
                     ArcGIS_Install RealityStudioUninstall{
                         Name = "RealityStudio"
                         Version = $ConfigurationData.ConfigData.RealityStudioVersion
+                        Ensure = "Absent"
+                    }
+                }
+                'CoordinateSystemsData' {
+                    ArcGIS_Install CoordinateSystemsDataUninstall{
+                        Name = "CoordinateSystemsData"
+                        Version = $ConfigurationData.ConfigData.CoordinateSystemsDataVersion
                         Ensure = "Absent"
                     }
                 }

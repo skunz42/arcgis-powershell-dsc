@@ -91,6 +91,10 @@
         {
             $NodeRoleArray += "RealityStudio"
         }
+        if($Node.Role -icontains "CoordinateSystemsData")
+        {
+            $NodeRoleArray += "CoordinateSystemsData"
+        }
         if($Node.Role -icontains "LicenseManager")
         {
             $NodeRoleArray += "LicenseManager"
@@ -793,21 +797,6 @@
                         Ensure = "Present"
                     }
 
-                    if($ConfigurationData.ConfigData.RealityStudio.CoordinateSystemsData){
-                        $CoordinateSystemsData = $ConfigurationData.ConfigData.RealityStudio.CoordinateSystemsData
-
-                        ArcGIS_Install RealityStudioInstallCoordinateSystemsData
-                        {
-                            Name = "CoordinateSystemsData"
-                            Version = $ConfigurationData.ConfigData.CoordinateSystemsDataVersion
-                            Path = $CoordinateSystemsData.Value.Installer.Path
-                            Extract = if($CoordinateSystemsData.Value.Installer.ContainsKey("IsSelfExtracting")){ $CoordinateSystemsData.Value.Installer.IsSelfExtracting }else{ $True }
-                            Arguments = $Arguments
-                            EnableMSILogging = $EnableMSILogging
-                            Ensure = "Present"
-                        }
-                    }
-
                     if($ConfigurationData.ConfigData.RealityStudio.Installer.PatchesDir -and -not($SkipPatchInstalls)) {
                         ArcGIS_InstallPatch RealityStudioInstallPatch
                         {
@@ -818,6 +807,31 @@
                             PatchInstallOrder = $ConfigurationData.ConfigData.RealityStudio.Installer.PatchInstallOrder
                             Ensure = "Present"
                         }
+                    }
+                }
+                'CordinateSystemsData'
+                {
+                    $Arguments = "/qn ACCEPTEULA=YES"
+
+                    if (-not ([string]::IsNullOrEmpty($ConfigurationData.ConfigData.CoordinateSystemsData.Installer.InstallDir))){
+                        $Arguments += " INSTALLDIR=`"$($ConfigurationData.ConfigData.CoordinateSystemsData.Installer.InstallDir)`""
+                    }
+
+                    # Pro installed for all users. Per User installs for Pro not supported
+                    $Arguments += " ALLUSERS=1"
+					
+					if(-not($ConfigurationData.ConfigData.RealityStudio.ContainsKey("EnableEUEI")) -or ($ConfigurationData.ConfigData.RealityStudio.ContainsKey("EnableEUEI") -and -not($ConfigurationData.ConfigData.RealityStudio.EnableEUEI)) ){
+						$Arguments += " ENABLEEUEI=0"
+                    }
+                    
+                    ArcGIS_Install CoordinateSystemsDataInstall{
+                        Name = "CoordinateSystemsData"
+                        Version = $ConfigurationData.ConfigData.CoordinateSystemsDataVersion
+                        Path = $ConfigurationData.ConfigData.CoordinateSystemsData.Installer.Path
+                        Extract = if($ConfigurationData.ConfigData.CoordinateSystemsData.Installer.ContainsKey("IsSelfExtracting")){ $ConfigurationData.ConfigData.CoordinateSystemsData.Installer.IsSelfExtracting }else{ $True }
+                        Arguments = $Arguments
+                        EnableMSILogging = $EnableMSILogging
+                        Ensure = "Present"
                     }
                 }
                 'LicenseManager'
