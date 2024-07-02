@@ -1,44 +1,45 @@
 {
     "AllNodes": [
         {
-            "NodeName": "[Machine Name 1]",
+            "NodeName": "ps0023365.esri.com",
             "Role": [
                 "Pro"
             ],
-            "ProLicenseFilePath":"",
-            "ProLicensePassword":""
+            "ProLicenseFilePath":"C:\\GEOTEC\\iac\\powershell-dsc\\installers\\Pro_AdvancedSU.prvc"
         }
     ],
     "ConfigData": {
-        "ProVersion": "[Version of ArcGIS Pro ]",
+        "ProVersion": "3.3",
         "Pro": {
-            "LicenseFilePath": "[License File Path - Pro ]",
+            "LicenseFilePath": "C:\\GEOTEC\\iac\\powershell-dsc\\installers\\Pro_AdvancedSU.prvc",
             "AuthorizationType": "SINGLE_USE",
-            "LockAuthSettings": "[ True(Default) | False ]",
-            "BlockAddIns": "[0 (Default All Addins Allowed), 1 (Signed by CA), 2 (Esri Addins Only), 3 (Esri Addins Only from Admin Folder), 4 (No Addins Allowed), 5 (Only Addins from Addmin Folder)]",
-            "SoftwareClass": "[Viewer | Editor | Professional]",
-            "PortalList": "[List of Portals for Pro]",
-            "AllUsers": "[1 (Per Machine Install)]",
-            "EnableEUEI": "[ True (Default enables participation of Esri User Experience Improvement Program) | False]",
-            "CheckForUpdatesAtStartup": "[ True (Default enables automatic update notifications of ArcGIS Pro) | False ]",
+            "LockAuthSettings": true,
+            "BlockAddIns": 0,
+            "SoftwareClass": "Professional",
+            "PortalList": "https://www.arcgis.com",
+            "AllUsers": 1,
+            "EnableEUEI": true,
+            "CheckForUpdatesAtStartup": false,
             "Installer": {
-                "Path": "[Pro Installer Path]",
-                "DotnetDesktopRuntimeDownloadUrl": "[Dotnet Desktop Runtime Installer Download Url]",
-                "DotnetDesktopRuntimePath": "[Dotnet Desktop Runtime Installer Path]",
-                "EdgeWebView2RuntimeDownloadUrl": "[Edge Web View 2 runtime Installer Download Url]",
-                "EdgeWebView2RuntimePath": "[Edge Web View 2 runtime Installer Path]",
-                "IsSelfExtracting": "[ Optional - True (Default) | False ]",
-                "InstallDir": "[Pro Install Dir - Ex. C:\\ArcGIS\\Pro]",
+                "Path": "C:\\GEOTEC\\iac\\powershell-dsc\\installers\\ArcGISPro_33_190016.exe",
+                "DotnetDesktopRuntimePath": "C:\\GEOTEC\\iac\\powershell-dsc\\installers\\windowsdesktop-runtime-6.0.16-win-x64.exe",
+                "EdgeWebView2RuntimePath": "C:\\GEOTEC\\iac\\powershell-dsc\\installers\\MicrosoftEdgeWebView2RuntimeInstallerX64.exe",
+                "IsSelfExtracting": true,
+                "InstallDir": "C:\\ArcGIS\\Pro",
                 "PatchesDir": "",
-                "PatchInstallOrder": [
-                    "Array of patch names to install in the needed order"
-                ]
+                "PatchInstallOrder": []
             },
             "Extensions":{
                 "DataInteroperability":{
                     "Installer": {
-                        "Path": "[Data Interoperability Installer Path]",
-                        "IsSelfExtracting": "[ Optional - True (Default) | False ]"
+                        "Path": "C:\\GEOTEC\\iac\\powershell-dsc\\installers\\ArcGISPro_33_Data_Interop_Ext_190134.exe",
+                        "IsSelfExtracting": true
+                    }
+                },
+                "Reality":{
+                    "Installer": {
+                        "Path": "C:\\GEOTEC\\iac\\powershell-dsc\\installers\\ArcGISPro_33_Reality_Ext_190705.exe",
+                        "IsSelfExtracting": true
                     }
                 }
             }

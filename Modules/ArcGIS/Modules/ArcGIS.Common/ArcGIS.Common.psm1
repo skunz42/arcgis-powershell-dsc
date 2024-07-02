@@ -845,6 +845,8 @@ function Get-ArcGISProductName
         $ProductName = "ArcGIS Data Interoperability $Version for Desktop"
     }elseif($Name -ieq 'ProDataInteroperability'){
         $ProductName = "Data Interoperability for ArcGIS Pro"
+    }elseif($Name -ieq 'ProReality'){
+        $ProductName = "ArcGIS Pro Reality Extension"
     }elseif($Name -ieq 'ServerDataReviewer'){
         $ProductName = "ArcGIS Data Reviewer $Version for Server"
     }elseif($Name -ieq 'DesktopDataReviewer'){
@@ -881,7 +883,7 @@ function Get-ComponentCode
        [CmdletBinding()]
        param
        (
-        [ValidateSet("Server","Portal","DataStore","GeoEvent","NotebookServer","MissionServer","WorkflowManagerServer", "WorkflowManagerWebApp","Monitor", "WebStyles", "WebAdaptorIIS", "WebAdaptorJava","Desktop","Pro","Drone2Map","RealityStudio","CoordinateSystemsData","LicenseManager","NotebookServerSamplesData","Insights","ServerDataInteroperability","DesktopDataInteroperability","ProDataInteroperability","ServerDataReviewer","DesktopDataReviewer","ServerWorkflowManagerClassic","DesktopWorkflowManagerClassic","ProWorkflowMangerClassic", "ServerLocationReferencing","DesktopLocationReferencing","ServerMappingChartingSolution","DesktopMappingChartingSolution","DesktopBackgroundGP64Bit","VideoServer","ServerDeepLearningLibraries","ProDeepLearningLibraries")]
+        [ValidateSet("Server","Portal","DataStore","GeoEvent","NotebookServer","MissionServer","WorkflowManagerServer", "WorkflowManagerWebApp","Monitor", "WebStyles", "WebAdaptorIIS", "WebAdaptorJava","Desktop","Pro","Drone2Map","RealityStudio","CoordinateSystemsData","LicenseManager","NotebookServerSamplesData","Insights","ServerDataInteroperability","DesktopDataInteroperability","ProDataInteroperability","ProReality","ServerDataReviewer","DesktopDataReviewer","ServerWorkflowManagerClassic","DesktopWorkflowManagerClassic","ProWorkflowMangerClassic", "ServerLocationReferencing","DesktopLocationReferencing","ServerMappingChartingSolution","DesktopMappingChartingSolution","DesktopBackgroundGP64Bit","VideoServer","ServerDeepLearningLibraries","ProDeepLearningLibraries")]
         [parameter(Mandatory = $true)]
         [System.String]
         $ComponentName,
@@ -1195,6 +1197,11 @@ function Get-ComponentCode
             '3.1' = 'D7189FF4-999B-4783-8B3D-01B900BFF16C'
             '3.2' = '7FFFFCBC-0C97-4B5A-9A5D-74A79D0C43AF'
             '3.3' = '37F59181-A898-46C4-BBFC-B209FED50428'
+        }
+        ProReality = @{
+            '3.1' = ''
+            '3.2' = ''
+            '3.3' = '7EED6389-494F-4D2B-AD5D-038ADBBE61E7'
         }
         ServerDataReviewer = @{
             '10.6' = '1659E374-3210-48F9-856F-7AC959D2EB6F'
