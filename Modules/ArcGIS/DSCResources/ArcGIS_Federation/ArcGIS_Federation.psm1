@@ -607,7 +607,8 @@ function Invoke-FederateServer
 		$Port = 7443
     )
 		
-    $FederationUrl = "https://$($PortalHostName):$Port/$SiteName/portaladmin/federation/servers/federate" 
+    #$FederationUrl = "https://$($PortalHostName):$Port/$SiteName/portaladmin/federation/servers/federate" 
+    $FederationUrl = "https://$($PortalHostName):$Port/$SiteName/admin/orgs/0123456789ABCDEF/federation/servers/federate"
     Write-Verbose "Federation EndPoint:- $FederationUrl"
     Write-Verbose "Referer:- $Referer"
     Write-Verbose "Federation Parameters:- url:- $ServerServiceUrl adminUrl = $ServerAdminUrl"
@@ -637,7 +638,8 @@ function Invoke-UnFederateServer
         $Port = 7443
     )
 
-    $UnFederationUrl = "https://$($PortalHostName):$($Port)/$SiteName/portaladmin/federation/servers/$($ServerID)/unfederate"
+    #$UnFederationUrl = "https://$($PortalHostName):$($Port)/$SiteName/portaladmin/federation/servers/$($ServerID)/unfederate"
+    $UnFederationUrl = "https://$($PortalHostName):$Port/$SiteName/admin/orgs/0123456789ABCDEF/federation/servers/$($ServerID)/unfederate"
     Write-Verbose "UnFederate the server with ID $($ServerID) using admin URL $UnFederationUrl"
     Invoke-ArcGISWebRequest -Url $UnFederationUrl -HttpFormParameters @{ f='json'; token = $Token } -Referer $Referer -Verbose -TimeOutSec 90
 }
@@ -663,7 +665,9 @@ function Get-FederatedServers
 		$Port = 7443
     )
     
-    Invoke-ArcGISWebRequest -Url ("https://$($PortalHostName):$Port/$($SiteName)" + '/portaladmin/federation/servers/') -HttpMethod 'GET' -HttpFormParameters @{ f = 'json'; token = $Token } -Referer $Referer 
+    # $ServersUrl = "https://$($PortalHostName):$Port/$($SiteName)" + '/portaladmin/federation/servers/'
+    $ServersUrl = "https://$($PortalHostName):$Port/$($SiteName)" + '/admin/orgs/0123456789ABCDEF/federation/servers/'
+    Invoke-ArcGISWebRequest -Url $ServersUrl -HttpMethod 'GET' -HttpFormParameters @{ f = 'json'; token = $Token } -Referer $Referer 
 }
 
 function Get-RegisteredServersForPortal 
@@ -686,7 +690,8 @@ function Get-RegisteredServersForPortal
 		$Referer
     )
     
-    $GetServersUrl = "https://$($PortalHostName):$Port/$SiteName/sharing/rest/portals/self/servers/" 
+    # $GetServersUrl = "https://$($PortalHostName):$Port/$SiteName/sharing/rest/portals/self/servers/" 
+    $GetServersUrl = "https://$($PortalHostName):$Port/$SiteName/sharing/rest/portals/self/servers/"
 	Invoke-ArcGISWebRequest -Url $GetServersUrl -HttpFormParameters @{ token = $Token; f = 'json' } -Referer $Referer       
 }
 
@@ -714,7 +719,9 @@ function Update-ServerAdminUrlForPortal
         $FederatedServer
     )
 
-    Invoke-ArcGISWebRequest -Url ("https://$($PortalHostName):$PortalPort/$($SiteName)" + "/sharing/rest/portals/0123456789ABCDEF/servers/$($FederatedServer.id)/update") -HttpMethod 'POST' -HttpFormParameters @{ f = 'json'; token = $Token; name =  $ServerAdminUrl; url = $FederatedServer.url; adminUrl = $ServerAdminUrl; isHosted = $FederatedServer.isHosted; serverType = $FederatedServer.serverType; } -Referer $Referer -Verbose
+    $ServerAdminUrl = "https://$($PortalHostName):$PortalPort/$($SiteName)" + "/sharing/rest/portals/0123456789ABCDEF/servers/$($FederatedServer.id)/update"
+
+    Invoke-ArcGISWebRequest -Url $ServerAdminUrl -HttpMethod 'POST' -HttpFormParameters @{ f = 'json'; token = $Token; name =  $ServerAdminUrl; url = $FederatedServer.url; adminUrl = $ServerAdminUrl; isHosted = $FederatedServer.isHosted; serverType = $FederatedServer.serverType; } -Referer $Referer -Verbose
 } 
 
 function Get-OAuthApplication
@@ -742,7 +749,8 @@ function Get-OAuthApplication
 		$AppId = 'arcgisonline'
     )
     
-    Invoke-ArcGISWebRequest -Url ("https://$($PortalHostName):$Port/$($SiteName)" + "/sharing/oauth2/apps/$($AppId)") -HttpMethod 'GET' -HttpFormParameters @{ f = 'json'; token = $Token } -Referer $Referer 
+    $OAuthUrl = "https://$($PortalHostName):$Port/$($SiteName)" + "/sharing/oauth2/apps/$($AppId)"
+    Invoke-ArcGISWebRequest -Url $OAuthUrl -HttpMethod 'GET' -HttpFormParameters @{ f = 'json'; token = $Token } -Referer $Referer 
 }
 
 function Update-OAuthApplication
@@ -774,7 +782,8 @@ function Update-OAuthApplication
     )
     
     $redirect_uris = ConvertTo-Json $AppObject.redirect_uris -Depth 1    
-    Invoke-ArcGISWebRequest -Url ("https://$($PortalHostName):$Port/$($SiteName)" + "/sharing/oauth2/apps/$($AppId)/update") -HttpMethod 'POST' -HttpFormParameters @{ f = 'json'; token = $Token; redirect_uris = $redirect_uris } -Referer $Referer -Verbose
+    $OAuthUrl = "https://$($PortalHostName):$Port/$($SiteName)" + "/sharing/oauth2/apps/$($AppId)/update"
+    Invoke-ArcGISWebRequest -Url $OAuthUrl -HttpMethod 'POST' -HttpFormParameters @{ f = 'json'; token = $Token; redirect_uris = $redirect_uris } -Referer $Referer -Verbose
 }
 
 function Update-FederatedServer
@@ -812,7 +821,8 @@ function Update-FederatedServer
     )
     
     try{
-        $UpdateUrl = "https://$($PortalHostName):$Port/$($SiteName)" + "/portaladmin/federation/servers/"+$ServerId+"/update"
+        # $UpdateUrl = "https://$($PortalHostName):$Port/$($SiteName)" + "/portaladmin/federation/servers/"+$ServerId+"/update"
+        $UpdateUrl = "https://$($PortalHostName):$Port/$($SiteName)" + "/admin/orgs/0123456789ABCDEF/federation/servers/"+$ServerId+"/update"
         $response = Invoke-ArcGISWebRequest -Url $UpdateUrl -HttpMethod 'POST' -HttpFormParameters @{ f = 'json'; token = $Token; serverRole = $ServerRole; serverFunction = $ServerFunction } -Referer $Referer -TimeOutSec 300 -Verbose 
         Write-Verbose ($response | ConvertTo-Json -Depth 5 -Compress)
         $response

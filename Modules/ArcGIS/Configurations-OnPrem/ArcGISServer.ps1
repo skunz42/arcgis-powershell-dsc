@@ -41,7 +41,7 @@
 
         [Parameter(Mandatory=$False)]
         [System.Boolean]
-        $OpenFirewallPorts = $False,
+        $OpenFirewallPorts = $true,
 
         [Parameter(Mandatory=$False)]
         [System.String]

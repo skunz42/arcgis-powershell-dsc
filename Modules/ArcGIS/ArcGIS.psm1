@@ -1515,7 +1515,7 @@ function Invoke-ArcGISConfiguration
                                 $ServerArgs["AdditionalServerRoles"] = $ConfigurationParamsHashtable.ConfigData.AdditionalServerRoles
                             }
 
-                            $ServerArgs["OpenFirewallPorts"] = ($PortalCheck -or $DataStoreCheck -or $IsServerWAOnSeparateMachine)
+                            $ServerArgs["OpenFirewallPorts"] = $true
                             $ServerArgs["RegisteredDirectories"] = ($ConfigurationParamsHashtable.ConfigData.Server.RegisteredDirectories | ConvertTo-Json)
                             $ServerArgs["LocalRepositoryPath"] = if($ConfigurationParamsHashtable.ConfigData.Server.LocalRepositoryPath){$ConfigurationParamsHashtable.ConfigData.Server.LocalRepositoryPath}else{$null}
                         }
