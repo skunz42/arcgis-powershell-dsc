@@ -1082,7 +1082,7 @@ function Get-ComponentCode
             '2022.1' = ''
             '2023.1' = 'BB670C8B-C096-4A17-9665-3F8CBA150332'
             '2023.2' = 'DBEFE4ED-2617-442C-BCDD-E7FD1091D2F0'
-            '2024.1' = ''
+            '2024.1' = '6C107DCC-682F-416A-B3B6-4219032077A7'
         }
         RealityStudio = @{
             '2023.1' = ''

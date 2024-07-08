@@ -1,7 +1,7 @@
 {
   "AllNodes": [
     {
-      "NodeName": "ps0023365.esri.com",
+      "NodeName": "ps0023497.esri.com",
       "Role": [
           "RealityStudio"
       ],
@@ -19,7 +19,7 @@
       "EnableEUEI": true,
       "Installer": {
         "Path": "C:\\GEOTEC\\iac\\powershell-dsc\\installers\\ArcGIS_Reality_Studio_20242_190685.exe",
-        "DotnetDesktopRuntimePath": "C:\\GEOTEC\\iac\\powershell-dsc\\installers\\windowsdesktop-runtime-6.0.16-win-x64.exe",
+        "DotnetDesktopRuntimePath": "C:\\GEOTEC\\iac\\powershell-dsc\\installers\\windowsdesktop-runtime-8.0.6-win-x64.exe",
         "EdgeWebView2RuntimePath": "C:\\GEOTEC\\iac\\powershell-dsc\\installers\\MicrosoftEdgeWebView2RuntimeInstallerX64.exe",
         "IsSelfExtracting": true,
         "InstallDir": "C:\\ArcGIS\\RealityStudio",
