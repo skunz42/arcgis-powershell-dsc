@@ -1,7 +1,7 @@
 {
   "AllNodes": [
     {
-      "NodeName": "ps0023365.esri.com",
+      "NodeName": "ps0023497.esri.com",
       "Role": [
           "Drone2Map"
       ],
@@ -9,7 +9,7 @@
     }
   ],
   "ConfigData": {
-    "Drone2MapVersion": "2023.2",
+    "Drone2MapVersion": "2024.1",
     "Drone2Map": {
       "LicenseFilePath": "C:\\GEOTEC\\iac\\powershell-dsc\\installers\\Drone2MapAdv.prvc",
       "AuthorizationType": "SINGLE_USE",
@@ -18,8 +18,9 @@
       "AllUsers": 1,
       "EnableEUEI": true,
       "Installer": {
-        "Path": "C:\\GEOTEC\\iac\\powershell-dsc\\installers\\ArcGIS_Drone2Map_20232_188405.exe",
-        "DotnetDesktopRuntimePath": "C:\\GEOTEC\\iac\\powershell-dsc\\installers\\windowsdesktop-runtime-6.0.16-win-x64.exe",
+        "Path": "C:\\GEOTEC\\iac\\powershell-dsc\\installers\\ArcGIS_Drone2Map_20241_190575.exe",
+        "DotnetDesktopRuntimePath": "C:\\GEOTEC\\iac\\powershell-dsc\\installers\\windowsdesktop-runtime-8.0.6-win-x64.exe",
+        "EdgeWebView2RuntimePath": "C:\\GEOTEC\\iac\\powershell-dsc\\installers\\MicrosoftEdgeWebView2RuntimeInstallerX64.exe",
         "IsSelfExtracting": true,
         "InstallDir": "C:\\ArcGIS\\Drone2Map",
         "PatchesDir": "",
