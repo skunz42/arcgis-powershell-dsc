@@ -6,7 +6,7 @@
     }
   ],
   "ConfigData": {
-    "CoordinateSystemsDataVersion": "3.3",
+    "CoordinateSystemsDataVersion": "11.3",
     "CoordinateSystemsData":{
       "AllUsers": 1,
       "EnableEUEI": true,
