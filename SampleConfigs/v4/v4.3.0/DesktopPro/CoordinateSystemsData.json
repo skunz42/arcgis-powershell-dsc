@@ -1,12 +1,12 @@
 {
   "AllNodes": [
     {
-      "NodeName": "ps0023365.esri.com",
+      "NodeName": "ps0023497.esri.com",
       "Role": ["CoordinateSystemsData"]
     }
   ],
   "ConfigData": {
-    "CoordinateSystemsDataVersion": "3.3",
+    "CoordinateSystemsDataVersion": "11.3",
     "CoordinateSystemsData":{
       "AllUsers": 1,
       "EnableEUEI": true,
